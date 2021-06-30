@@ -5,7 +5,7 @@ using Dapper;
 using Newtonsoft.Json.Linq;
 using System.Web.Http.Cors;
 using E0001.Models;
-
+using E0001.Connection;
 namespace E0001.Controllers
 {
     /// <summary>
@@ -16,9 +16,11 @@ namespace E0001.Controllers
     public class JobListController : ApiController
     {
         private readonly OracleConnectionFactory _conn;
+        private readonly SqlConnectionFactory sqlserver_conn;
+
         private JobListController()
         {
-            _conn = new OracleConnectionFactory();
+            sqlserver_conn = new SqlConnectionFactory();
         }
 
         /// <summary>
@@ -179,5 +181,41 @@ namespace E0001.Controllers
             var result = cn.Execute(sql, new { PROJ_ID = id });
             return result;
         }
+
+
+        /// <summary>
+        /// test connect to db
+        /// </summary>
+        /// <param name="te">test</param>
+        /// <returns>「工作代號」屬性清單</returns>
+        [HttpGet]
+        [Route("GetEMPL_TRAN_COURS")]
+        public IHttpActionResult GetEMPL_TRAN_COURS(string te)
+        {
+            using (var cn = sqlserver_conn.CreateConnection("PDCGSV03"))
+            {
+                string sql = $@"SELECT name as EMPL_NAME 
+                                ,EmployeeID as EMPL_SERI_NMBR
+                                ,CourseOfferingSerialNo as COUR_SERI
+                                ,TraineeTrainingRecordSerialNo as EMPL_TRAN_SERI
+                                ,CourseOfferingID as  COUR_ID
+                                ,CourseOfferingName as COUR_NAME
+                                ,CourseOfferingStartDate as COUR_FROM
+                                ,CourseOfferingEndDate as COUR_END    
+                                ,CourseOfferingHour as COUR_HOUR
+                                ,Description as  COUR_DESC
+                                ,State as EMPL_TRAN_LEAV
+                             from TraineeTrainingRecordView
+                             where (EmployeeID = UPPER('{te}')) ";
+                var result = cn.Query(sql);
+                return Json(JArray.FromObject(result));
+            }
+        }
+
+        
+
+
+
+
     }
 }

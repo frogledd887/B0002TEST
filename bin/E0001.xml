@@ -541,5 +541,12 @@
             <param name="id">工作代號</param>
             <returns>成功交易筆數</returns>
         </member>
+        <member name="M:E0001.Controllers.JobListController.GetEMPL_TRAN_COURS(System.String)">
+            <summary>
+            test connect to db
+            </summary>
+            <param name="te">test</param>
+            <returns>「工作代號」屬性清單</returns>
+        </member>
     </members>
 </doc>

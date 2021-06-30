@@ -22,10 +22,23 @@ namespace E0001.Connection
 
                 case "PDCGSV03":
                     {
-                        string db_source = "PDCGSV03";
-                        string db_userid = "pmuser";
-                        string db_password = "Pm#8021mp";
-                        string database = "Dorts_TCGPSN";
+                        string db_source = "dvwfsv03";
+                        string db_userid = "spmUser";
+                        string db_password = "AAAAAA";
+                        string database = "Emptemp";
+                        string ConnectionString = $@"Server={db_source};
+                                                     Database={database};
+                                                     MultipleActiveResultSets=true;
+                                                     User ID={db_userid};
+                                                     Password={db_password}";
+                        return new SqlConnection(ConnectionString);
+                    }
+                case "PDCGSV04":
+                    {
+                        string db_source = "dvwfsv03";
+                        string db_userid = "spmUser";
+                        string db_password = "AAAAAA";
+                        string database = "aEnrichOLTP";
                         string ConnectionString = $@"Server={db_source};
                                                      Database={database};
                                                      MultipleActiveResultSets=true;
