@@ -541,12 +541,37 @@
             <param name="id">工作代號</param>
             <returns>成功交易筆數</returns>
         </member>
-        <member name="M:E0001.Controllers.JobListController.GetEMPL_TRAN_COURS(System.String)">
+        <member name="M:E0001.Controllers.JobListController.GetEMPL_TRAN_COURS(System.String,System.String)">
             <summary>
-            test connect to db
+            員工編號現行有效報名課程查詢
             </summary>
-            <param name="te">test</param>
-            <returns>「工作代號」屬性清單</returns>
+            <param name="name1">員工名</param>
+            <param name="Time1">日期 時間</param>
+            <returns></returns>
+        </member>
+        <member name="M:E0001.Controllers.JobListController.GetEMPL_COUR_TIME(System.String,System.String,System.String)">
+            <summary>
+            員工該時段已報名課程查詢
+            </summary>
+            <param name="id">員工號</param>
+            <param name="startTime1">日期 時間</param>
+            <param name="endTime1">日期 時間</param>
+            <returns></returns>
+        </member>
+        <member name="M:E0001.Controllers.JobListController.GetCOUR_MAIN_UNDERTAKER(System.String)">
+            <summary>
+            取得課程主辦人人員
+            </summary>
+            <param name="courseID">課程號</param>
+            <returns></returns>
+        </member>
+        <member name="M:E0001.Controllers.JobListController.GetCOUR_DEPA_UNDERTAKER(System.String,System.String)">
+            <summary>
+            工程處訓練業務承辨人
+            </summary>
+            <param name="courseID">課程號</param>
+            <param name="depaCode">課程號</param>
+            <returns></returns>
         </member>
     </members>
 </doc>

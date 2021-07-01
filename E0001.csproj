@@ -178,6 +178,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Connection\OracleConnectionFactory.cs" />
     <Compile Include="Connection\SqlConnectionFactory.cs" />
+    <Compile Include="Models\Empl_Tran_Cours.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\JobListController.cs" />
     <Compile Include="Global.asax.cs">

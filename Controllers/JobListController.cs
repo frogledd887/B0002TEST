@@ -132,6 +132,8 @@ namespace E0001.Controllers
         /// <param name="value">JOB_NO_LIST</param>
         /// <returns>成功交易筆數</returns>
         // POST: api/PC_JobListProj
+        
+        
         public int Post([FromBody] JOB_NO_LIST value)
         {
             var cn = _conn.CreateConnection("PC");
@@ -145,6 +147,7 @@ namespace E0001.Controllers
             var result = cn.Execute(sql, value);
             return result;
         }
+        
 
         /// <summary>
         /// 修改工作代號資料(包含工作代號\施工標號\施工標號)
@@ -182,12 +185,13 @@ namespace E0001.Controllers
             return result;
         }
 
-
+        /*
         /// <summary>
         /// test connect to db
         /// </summary>
         /// <param name="te">test</param>
         /// <returns>「工作代號」屬性清單</returns>
+        /// 
         [HttpGet]
         [Route("GetEMPL_TRAN_COURS")]
         public IHttpActionResult GetEMPL_TRAN_COURS(string te)
@@ -212,9 +216,146 @@ namespace E0001.Controllers
             }
         }
 
+
+        */
+
+
+
+        /// <summary>
+        /// 員工編號現行有效報名課程查詢
+        /// </summary>
+        /// <param name="name1">員工名</param>
+        /// <param name="Time1">日期 時間</param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("Empl/GetEMPL_TRAN_COURS")]
+        public IHttpActionResult GetEMPL_TRAN_COURS(string name1, string Time1)
+        {
+            using (var cn = sqlserver_conn.CreateConnection("PDCGSV03"))
+            {
+ 
+                string sql =@"SELECT name as EMPL_NAME 
+                                ,EmployeeID as EMPL_SERI_NMBR
+                                ,CourseOfferingSerialNo as COUR_SERI
+                                ,TraineeTrainingRecordSerialNo as EMPL_TRAN_SERI
+                                ,CourseOfferingID as  COUR_ID
+                                ,CourseOfferingName as COUR_NAME
+                                ,CourseOfferingStartDate as COUR_FROM
+                                ,CourseOfferingEndDate as COUR_END    
+                                ,CourseOfferingHour as COUR_HOUR
+                                ,Description as  COUR_DESC
+                                ,State as EMPL_TRAN_LEAV
+                                from TraineeTrainingRecordView
+                                where Name  = @name1 and  CourseOfferingStartDate >= @Time1 and State = 0";
+                var result = cn.Query(sql, new { name1,Time1} );
+                return Json(JArray.FromObject(result));
+
+                /*
+                string sql =$@"SELECT name as EMPL_NAME 
+                                ,EmployeeID as EMPL_SERI_NMBR
+                                ,CourseOfferingSerialNo as COUR_SERI
+                                ,TraineeTrainingRecordSerialNo as EMPL_TRAN_SERI
+                                ,CourseOfferingID as  COUR_ID
+                                ,CourseOfferingName as COUR_NAME
+                                ,CourseOfferingStartDate as COUR_FROM
+                                ,CourseOfferingEndDate as COUR_END    
+                                ,CourseOfferingHour as COUR_HOUR
+                                ,Description as  COUR_DESC
+                                ,State as EMPL_TRAN_LEAV
+                                from TraineeTrainingRecordView
+                                
+								where Name  = '{name1}' and  CourseOfferingStartDate >= '{Time1}' and State = 0";
+                
+                var result = cn.Query(sqlname1);
+                return Json(JArray.FromObject(result)); 
+                 
+                */
+
+
+            }
+        }
+
+
+
+        /// <summary>
+        /// 員工該時段已報名課程查詢
+        /// </summary>
+        /// <param name="id">員工號</param>
+        /// <param name="startTime1">日期 時間</param>
+        /// <param name="endTime1">日期 時間</param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("Empl/GetEMPL_COUR_TIME")]
+        public IHttpActionResult GetEMPL_COUR_TIME(string id, string startTime1, string endTime1)
+        {
+            using (var cn = sqlserver_conn.CreateConnection("PDCGSV03"))
+            {
+
+                string sql = @"SELECT * FROM TraineeTrainingRecordView
+                    WHERE EmployeeID = @id AND @startTime1 >= CourseOfferingStartDate AND @endTime1 <= CourseOfferingEndDate";
+                var result = cn.Query(sql, new { id, startTime1,endTime1});
+                return Json(JArray.FromObject(result));
+
+
+            }
+        }
+
         
 
+        /// <summary>
+        /// 取得課程主辦人人員
+        /// </summary>
+        /// <param name="courseID">課程號</param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("Empl/GetCOUR_MAIN_UNDERTAKER")]
+        public IHttpActionResult GetCOUR_MAIN_UNDERTAKER(string courseID)
+        {
+            using (var cn = sqlserver_conn.CreateConnection("PDCGSV04"))
+            {
 
+                string sql = @"SELECT EmployeeID as EMPL_SERI_NMBR ,Name as EMPL_NAME FROM Org.Employee WHERE SerialNo in (SELECT UnderTaker FROM CF.CourseOffering WHERE courseofferingID = @courseID)";
+                var result = cn.Query(sql, new { courseID });
+                return Json(JArray.FromObject(result));
+
+
+            }
+        }
+
+
+
+        /// <summary>
+        /// 工程處訓練業務承辨人
+        /// </summary>
+        /// <param name="courseID">課程號</param>
+        /// <param name="depaCode">課程號</param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("Empl/GetCOUR_DEPA_UNDERTAKER")]
+        public IHttpActionResult GetCOUR_DEPA_UNDERTAKER(string courseID,string depaCode)
+        {
+            using (var cn = sqlserver_conn.CreateConnection("PDCGSV04"))
+            {
+
+                string sql = @"SELECT DOMAN.ID AS TRAN_DEPA_ID,
+                                DOMAN.Name AS TRAN_DEPA_NAME,
+                                @depaCode  AS DEPA_CODE,
+                                EMPLY.EmployeeID AS EMPL_SERI_NMBR,
+                                EMPLY.Name AS EMPL_NAME 
+
+                                FROM aEnrichOLTP.Org.EmployeePermissionSet AS EMPPS LEFT 
+                                JOIN aEnrichOLTP.Org.Employee AS EMPLY 
+                                on EMPPS.EmployeeSerialNo = EMPLY.SerialNo LEFT JOIN aEnrichOLTP.Org.Domain AS DOMAN 
+                                on EMPPS.DomainSerialNo = DOMAN.SerialNo
+                                ERE EMPPS.PermissionSerialNo = 'PERMS000000000000026' 
+                                and EmployeeID not like '%admin%' and DOMAN.ID = domain_id";
+
+                var result = cn.Query(sql, new { depaCode });
+                return Json(JArray.FromObject(result));
+
+
+            }
+        }
 
 
     }
