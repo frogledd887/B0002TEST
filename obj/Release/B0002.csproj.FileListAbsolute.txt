@@ -92,9 +92,7 @@ E:\final\E0001\bin\zh-Hant\System.Web.Razor.resources.dll
 E:\final\E0001\bin\zh-Hant\System.Web.WebPages.resources.dll
 E:\final\E0001\bin\zh-Hant\System.Web.WebPages.Deployment.resources.dll
 E:\final\E0001\bin\zh-Hant\System.Web.WebPages.Razor.resources.dll
-E:\final\E0001\obj\Debug\B0002.csproj.CoreCompileInputs.cache
-E:\final\E0001\obj\Debug\B0002.csproj.CopyComplete
-E:\final\E0001\obj\Debug\E0001.dll
-E:\final\E0001\obj\Debug\E0001.pdb
-E:\final\E0001\obj\Debug\B0002.csproj.AssemblyReference.cache
-E:\final\E0001\bin\B0002.xml
+E:\final\E0001\obj\Release\B0002.csproj.CoreCompileInputs.cache
+E:\final\E0001\obj\Release\B0002.csproj.CopyComplete
+E:\final\E0001\obj\Release\E0001.dll
+E:\final\E0001\obj\Release\E0001.pdb

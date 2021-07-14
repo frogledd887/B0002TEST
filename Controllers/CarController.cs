@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Web.Http;
-using E0001.Connection;
+using B0002.Connection;
 using Dapper;
 using Newtonsoft.Json.Linq;
 using System.Web.Http.Cors;
-using E0001.Models;
-using E0001.Connection;
-namespace E0001.Controllers
+
+namespace B0002.Controllers
 {
     /// <summary>
     /// 工作代號清單
@@ -23,25 +22,31 @@ namespace E0001.Controllers
             sqlserver_conn = new SqlConnectionFactory();
         }
 
-        
 
-       
-
+        /// <summary>
+        /// 工程處訓練業務承辨人
+        /// </summary>
+        /// <param name="id">employee id</param>
+        /// <returns></returns>
         [HttpGet]
-        [Route("Car/GetCar")]
-        public IHttpActionResult GetCar()
+        [Route("Car/Get")]
+        public IHttpActionResult GetData(string id)
         {
-            using (var cn = sqlserver_conn.CreateConnection("PDDBSV04"))
+            using (var cn = sqlserver_conn.CreateConnection("DVDBSV01"))
             {
-                string sql = @"select user_id from CAR_USER where user_name = '顏月珊'";
-                //string sql = $@"INSERT INTO CAR_USER (user_id, user_name, rank) VALUES (42388, '劉廷', 1234)";
-                //string sql = $@"select * from CAR_USER ";
-                //string sql = $@"update CAR_USER set user_id = 42389 where user_name ='劉廷'";
-                //string sql = $@"DELETE FROM CAR_USER WHERE user_name = '劉廷' ";
-                var result = cn.Query(sql);
+                string sql = @"SELECT user_id ,
+                                   user_name ,
+                                   car_no 
+                                   FROM dbo.car_user          
+                                   WHERE user_id  = @ueer_id";
+
+                var result = cn.Query(sql, new { ueer_id = id });
                 return Json(JArray.FromObject(result));
+
             }
         }
+
+
 
 
     }

@@ -1,11 +1,11 @@
 using System.Web.Http;
 using WebActivatorEx;
-using E0001;
+using B0002;
 using Swashbuckle.Application;
 
 [assembly: PreApplicationStartMethod(typeof(SwaggerConfig), "Register")]
 
-namespace E0001
+namespace B0002
 {
     public class SwaggerConfig
     {
@@ -32,7 +32,7 @@ namespace E0001
                         // hold additional metadata for an API. Version and title are required but you can also provide
                         // additional fields by chaining methods off SingleApiVersion.
                         //
-                        c.SingleApiVersion("v1", "E0001");
+                        c.SingleApiVersion("v1", "B0002");
 
                         // If you want the output Swagger docs to be indented properly, enable the "PrettyPrint" option.
                         //
@@ -254,7 +254,7 @@ namespace E0001
 
         private static string GetXmlCommentsPath()
         {
-            return System.AppDomain.CurrentDomain.BaseDirectory + @"\bin\E0001.XML";
+            return System.AppDomain.CurrentDomain.BaseDirectory + @"\bin\B0002.XML";
         }
     }
 }

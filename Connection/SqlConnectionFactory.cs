@@ -5,7 +5,7 @@ using System.Web;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace E0001.Connection
+namespace B0002.Connection
 {
     public class SqlConnectionFactory
     {
@@ -18,11 +18,11 @@ namespace E0001.Connection
                         var ConnectionString = System.Web.Configuration.WebConfigurationManager.ConnectionStrings[name].ConnectionString;
                         return new SqlConnection(ConnectionString);
                     }
-                case "PDDBSV04":
+                case "DVDBSV01":
                     {
                         //測試SQL Server PP人事資料庫
 
-                        string db_source = "dvdbsv01";
+                        string db_source = name;
                         string db_userid = "parkdba";
                         string db_password = "Abcd1234";
                         string database = "PARK_T";

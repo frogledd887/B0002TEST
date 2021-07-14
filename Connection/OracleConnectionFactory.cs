@@ -5,7 +5,7 @@ using System.Web;
 using System.Data;
 using Oracle.ManagedDataAccess.Client;
 
-namespace E0001.Connection
+namespace B0002.Connection
 {
     public class OracleConnectionFactory
     {

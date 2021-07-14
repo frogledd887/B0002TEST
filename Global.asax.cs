@@ -3,7 +3,7 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 
-namespace E0001
+namespace B0002
 {
     public class WebApiApplication : System.Web.HttpApplication
     {
