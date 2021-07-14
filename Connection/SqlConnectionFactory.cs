@@ -13,32 +13,19 @@ namespace E0001.Connection
         {
             switch (name.ToUpper())
             {
-                case "name":
+                case "WWWDB2":
                     {
-                        // 此方法須於 Web.config 定義
                         var ConnectionString = System.Web.Configuration.WebConfigurationManager.ConnectionStrings[name].ConnectionString;
                         return new SqlConnection(ConnectionString);
                     }
+                case "PDDBSV04":
+                    {
+                        //測試SQL Server PP人事資料庫
 
-                case "PDCGSV03":
-                    {
-                        string db_source = "dvwfsv03";
-                        string db_userid = "spmUser";
-                        string db_password = "AAAAAA";
-                        string database = "Emptemp";
-                        string ConnectionString = $@"Server={db_source};
-                                                     Database={database};
-                                                     MultipleActiveResultSets=true;
-                                                     User ID={db_userid};
-                                                     Password={db_password}";
-                        return new SqlConnection(ConnectionString);
-                    }
-                case "PDCGSV04":
-                    {
-                        string db_source = "dvwfsv03";
-                        string db_userid = "spmUser";
-                        string db_password = "AAAAAA";
-                        string database = "aEnrichOLTP";
+                        string db_source = "dvdbsv01";
+                        string db_userid = "parkdba";
+                        string db_password = "Abcd1234";
+                        string database = "PARK_T";
                         string ConnectionString = $@"Server={db_source};
                                                      Database={database};
                                                      MultipleActiveResultSets=true;

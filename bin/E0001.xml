@@ -481,97 +481,10 @@
             </summary>
             <param name="documentPath">The physical path to XML document.</param>
         </member>
-        <member name="T:E0001.Controllers.JobListController">
+        <member name="T:E0001.Controllers.CarController">
             <summary>
             工作代號清單
             </summary>
-        </member>
-        <member name="M:E0001.Controllers.JobListController.GetJobKind">
-            <summary>
-            取得「工作代號」類型清單
-            </summary>
-            <returns>「工作代號」類型清單</returns>
-        </member>
-        <member name="M:E0001.Controllers.JobListController.GetJobAttrByKind(System.String)">
-            <summary>
-            取得類型之「工作代號」屬性清單 
-            </summary>
-            <param name="kind">「工作代號」類型 (ex: GetJobAttrByKind?kind={value})</param>
-            <returns>「工作代號」屬性清單</returns>
-        </member>
-        <member name="M:E0001.Controllers.JobListController.GetJobNoByAttr(System.String)">
-            <summary>
-            取得「工作代號」編碼序號
-            </summary>
-            <param name="attr">「工作代號」屬性</param> 
-            <returns>編碼序號</returns>
-        </member>
-        <member name="M:E0001.Controllers.JobListController.GetProjByLine(System.String)">
-            <summary>
-            取得「線別」內之「施工標號」
-            </summary>
-            <param name="line">「線別」</param> 
-            <returns>施工標號及名稱</returns>
-        </member>
-        <member name="M:E0001.Controllers.JobListController.GetProjById(System.String)">
-            <summary>
-            取得施工標名稱
-            </summary>
-            <param name="id">施工標號</param> 
-            <returns>施工標名稱</returns>
-        </member>
-        <member name="M:E0001.Controllers.JobListController.Post(E0001.Models.JOB_NO_LIST)">
-            <summary>
-            新增工作代號資料(包含工作代號\施工標號\施工標號)
-            </summary>
-            <param name="value">JOB_NO_LIST</param>
-            <returns>成功交易筆數</returns>
-        </member>
-        <member name="M:E0001.Controllers.JobListController.Put(E0001.Models.JOB_NO_LIST)">
-            <summary>
-            修改工作代號資料(包含工作代號\施工標號\施工標號)
-            </summary>
-            <param name="value">JOB_NO_LIST</param>
-            <returns>成功交易筆數</returns>
-        </member>
-        <member name="M:E0001.Controllers.JobListController.Delete(System.String)">
-            <summary>
-            刪除工作代號資料
-            </summary>
-            <param name="id">工作代號</param>
-            <returns>成功交易筆數</returns>
-        </member>
-        <member name="M:E0001.Controllers.JobListController.GetEMPL_TRAN_COURS(System.String,System.String)">
-            <summary>
-            員工編號現行有效報名課程查詢
-            </summary>
-            <param name="name1">員工名</param>
-            <param name="Time1">日期 時間</param>
-            <returns></returns>
-        </member>
-        <member name="M:E0001.Controllers.JobListController.GetEMPL_COUR_TIME(System.String,System.String,System.String)">
-            <summary>
-            員工該時段已報名課程查詢
-            </summary>
-            <param name="id">員工號</param>
-            <param name="startTime1">日期 時間</param>
-            <param name="endTime1">日期 時間</param>
-            <returns></returns>
-        </member>
-        <member name="M:E0001.Controllers.JobListController.GetCOUR_MAIN_UNDERTAKER(System.String)">
-            <summary>
-            取得課程主辦人人員
-            </summary>
-            <param name="courseID">課程號</param>
-            <returns></returns>
-        </member>
-        <member name="M:E0001.Controllers.JobListController.GetCOUR_DEPA_UNDERTAKER(System.String,System.String)">
-            <summary>
-            工程處訓練業務承辨人
-            </summary>
-            <param name="courseID">課程號</param>
-            <param name="depaCode">課程號</param>
-            <returns></returns>
         </member>
     </members>
 </doc>

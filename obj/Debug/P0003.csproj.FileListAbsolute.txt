@@ -1,0 +1,4 @@
+E:\visual studio 2019\E0001\obj\Debug\P0003.csproj.AssemblyReference.cache
+E:\visual studio 2019\E0001\obj\Debug\P0003.csproj.CoreCompileInputs.cache
+E:\visual studio 2019\E0001\obj\Debug\E0001.dll
+E:\visual studio 2019\E0001\obj\Debug\E0001.pdb
