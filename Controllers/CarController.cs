@@ -4,6 +4,10 @@ using B0002.Connection;
 using Dapper;
 using Newtonsoft.Json.Linq;
 using System.Web.Http.Cors;
+using System.Collections;
+using System.Data;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace B0002.Controllers
 {
@@ -71,5 +75,99 @@ namespace B0002.Controllers
         }
 
 
+        [HttpPost]
+        [Route("Car/SPM_StepActivity")]
+        public List<SQLCommandObject> SPM_StepActivity([FromBody] object value)
+        {
+            DataSet dsAllData = JsonConvert.DeserializeObject<DataSet>((string)value);
+
+            //解析 allData 分別取得 BPM_FieldData 與 Variables 內容
+            Hashtable EFormFd = ParseDataSet("BPM_FieldData", ref dsAllData);
+            Hashtable Services = ParseDataSet("Variables", ref dsAllData);
+
+            //變數宣告存放執行 SQLCommand 集合
+            List<SQLCommandObject> sqls = new List<SQLCommandObject>();
+
+            SQLCommandObject sql = null;
+
+            //依完成關卡名稱加入 SQLCommand 集合
+            sql = new SQLCommandObject(
+                    "insert into [RunSqlCommandLogs] (CASEID,TASKID,StepName,StepEvent,LOG_DATETIME) " +
+                "values (@CASEID,@TASKID,@StepName,'SPM_StepActivity',getdate())"
+                  );
+            sql.CommandParameter.Add("@CASEID", (string)Services["CASEID"]);
+            sql.CommandParameter.Add("@TASKID", (string)Services["TASKID"]);
+            sql.CommandParameter.Add("@StepName", (string)Services["STEPNAME"]);
+            sqls.Add(sql);
+
+            return sqls;
+        }
+
+
+
+        private Hashtable ParseDataSet(string tableName, ref DataSet dsAllData)
+        {
+            Hashtable ret = new Hashtable();
+            try
+            {
+                if (dsAllData.Tables.Count != 0)
+                {
+                    if (dsAllData.Tables.Contains(tableName))
+                    {
+                        for (int idx = 0; idx <= dsAllData.Tables[tableName].Columns.Count - 1; idx++)
+                        {
+                            string columnName = dsAllData.Tables[tableName].Columns[idx].ColumnName;
+                            string columnValue = "";
+                            if (!Convert.IsDBNull(dsAllData.Tables[tableName].Rows[0][columnName]))
+                                columnValue = String.Format("{0}", dsAllData.Tables[tableName].Rows[0][columnName]);
+
+                            ret.Add(columnName, columnValue);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return ret;
+        }
+
+
     }
+}
+
+public class SQLCommandObject
+{
+    //建溝元
+    public SQLCommandObject()
+    {
+    }
+
+    //建溝元
+    public SQLCommandObject(string commandText)
+    {
+        CommandType = CommandType.Text;
+
+        CommandText = commandText;
+    }
+
+    //建溝元
+    public SQLCommandObject(CommandType commandType, string commandText)
+    {
+        CommandType = commandType;
+
+        CommandText = commandText;
+    }
+
+    //CommandText 指令類型
+    public System.Data.CommandType CommandType { get; set; }
+
+    //CommandText 指令內容
+    public string CommandText { get; set; }
+
+    //Parameter 參數集合
+    public Hashtable CommandParameter = new Hashtable();
+
 }
