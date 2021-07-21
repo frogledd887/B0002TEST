@@ -8,6 +8,8 @@ using System.Collections;
 using System.Data;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using E0001.Models;
+
 
 namespace B0002.Controllers
 {
@@ -20,6 +22,7 @@ namespace B0002.Controllers
     {
        
         private readonly SqlConnectionFactory sqlserver_conn;
+        private readonly Em _context;
 
         private CarController()
         {
@@ -67,8 +70,39 @@ namespace B0002.Controllers
                 ,user_name,car_no)
                  VALUES(@id,@name,@number)
                 ";
-
                 var result = cn.Query(sql, new { id, name, number });
+                return Json(JArray.FromObject(result));
+
+            }
+        }
+
+        //post api/test
+        [HttpPost]
+        [Route("Car/Test")]
+        public IHttpActionResult Test(Em value) {
+            using (var cn = sqlserver_conn.CreateConnection("DVDBSV01"))
+            {
+                string sql = @"INSERT INTO car_user(user_id
+                ,user_name,car_no)
+                 VALUES(@id,@name,@number)";
+                var result = cn.Query(sql, new { id=value.Id,name=value.Name, number=value.car });
+                return Json(JArray.FromObject(result));
+            }
+        }
+
+
+        //post api/test
+        [HttpPost]
+        [Route("Car/TestDone")]
+        public IHttpActionResult Done()
+        {
+            using (var cn = sqlserver_conn.CreateConnection("DVDBSV01"))
+            {
+                string sql = @"INSERT INTO car_user(user_id
+                ,user_name,car_no)
+                 VALUES(6,6,6)
+                ";
+                var result = cn.Query(sql);
                 return Json(JArray.FromObject(result));
 
             }
@@ -88,23 +122,42 @@ namespace B0002.Controllers
             //變數宣告存放執行 SQLCommand 集合
             List<SQLCommandObject> sqls = new List<SQLCommandObject>();
 
-            SQLCommandObject sql = null;
+            string stepName = Services["STEPNAME"].ToString();
+            string otherContent = "";
 
-            //依完成關卡名稱加入 SQLCommand 集合
-            sql = new SQLCommandObject(
-                    "insert into [RunSqlCommandLogs] (CASEID,TASKID,StepName,StepEvent,LOG_DATETIME) " +
-                "values (@CASEID,@TASKID,@StepName,'SPM_StepActivity',getdate())"
-                  );
-            sql.CommandParameter.Add("@CASEID", (string)Services["CASEID"]);
-            sql.CommandParameter.Add("@TASKID", (string)Services["TASKID"]);
-            sql.CommandParameter.Add("@StepName", (string)Services["STEPNAME"]);
-            sqls.Add(sql);
+            try
+            {
+                //////////////////////////////////////////
+                /*
+                 using (var cn = sqlserver_conn.CreateConnection("DVDBSV01"))
+            {
+                string sql = @"INSERT INTO car_user(user_id
+                ,user_name,car_no)
+                 VALUES(6,6,6)
+                ";
+                var result = cn.Query(sql);
+                return Json(JArray.FromObject(result));
+
+            }
+                 */
+                //////////////////////////////////////////
+            }
+            catch (Exception ex)
+            {
+                otherContent += " PlanName: E0001 工作代號申請單,"; //流程名稱
+                otherContent += " PLANSN: " + (string)Services["PLANSN"] + ","; //流程編號
+                otherContent += " CASEID: " + (string)Services["CASEID"] + ","; //案件編號
+                otherContent += " STEPNAME: " + (string)Services["STEPNAME"] + ","; //關卡名稱
+                otherContent += " Sys_LogonId: " + (string)Services["Sys_LogonId"]; //處理者帳號
+
+                //ProjectErrorLogService.RecordErrorLog("E0001 SPM_StepActivity", ex, otherContent);
+            }
 
             return sqls;
         }
 
 
-
+        //自 allData XML內容解析 tableName 資料表 DataRow 轉以 Hashtable 型式
         private Hashtable ParseDataSet(string tableName, ref DataSet dsAllData)
         {
             Hashtable ret = new Hashtable();
@@ -171,3 +224,5 @@ public class SQLCommandObject
     public Hashtable CommandParameter = new Hashtable();
 
 }
+
+
